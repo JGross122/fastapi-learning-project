@@ -12,17 +12,14 @@ from sqlalchemy import select
 from app.database import get_db
 import app.models as models
 
+from app.config import JWT_SECRET_KEY, ALGORITHM, EXPIRATION_MINUTES
+
 password_hash = PasswordHash.recommended()
-
-load_dotenv()
-
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
-ALGORITHM = "HS256"
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 def create_access_token(user_id: int):
-    expires_at = datetime.now(timezone.utc) + timedelta(minutes=30) # 30 minutes token lifetime
+    expires_at = datetime.now(timezone.utc) + timedelta(minutes=EXPIRATION_MINUTES)
     payload = {
         "sub":str(user_id),
         "exp":expires_at
