@@ -1,11 +1,14 @@
 import os
 from dotenv import load_dotenv
 from fastapi.testclient import TestClient
-from main import app, get_db
+from app.main import app
+from app.database import get_db
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-import models
+import app.models as models
 import pytest
+
+load_dotenv()
 
 TEST_DATABASE_URL = os.environ["TEST_DATABASE_URL"]
 test_engine = create_engine(TEST_DATABASE_URL)
